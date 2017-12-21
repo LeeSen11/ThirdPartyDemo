@@ -10,11 +10,12 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    fileprivate lazy var collectionView: CollectionView = {
-        let collectionV: CollectionView = CollectionView()
-        collectionV.translatesAutoresizingMaskIntoConstraints = false
-        return collectionV
-    }()
+//    fileprivate lazy var collectionView: CollectionView = {
+//        let collectionV: CollectionView = CollectionView()
+//        return collectionV
+//    }()
+    
+    let collectionView: CollectionView = CollectionView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,15 +26,10 @@ class ViewController: UIViewController {
     
     // MARK: private methods
     fileprivate func initContentViews() {
-//        let guide = view.layoutMarginsGuide
         view.backgroundColor = UIColor.white
         collectionView.frame = view.bounds
-        collectionView.contentInset = UIEdgeInsets(top: 40.0, left: 10.0, bottom: 10.0, right: 0.0)
+        collectionView.contentInset = UIEdgeInsets(top: 40.0, left: 10.0, bottom: 0.0, right: 10.0)
         view.addSubview(collectionView)
-//        collectionView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 10.0).isActive = true
-//        collectionView.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
-//        collectionView.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
-//        collectionView.bottomAnchor.constraint(equalTo: guide.bottomAnchor).isActive = true
     }
     
     fileprivate func singleProvider() {
@@ -44,9 +40,17 @@ class ViewController: UIViewController {
             label.textAlignment = .center
             label.text = "\(data)"
         }, sizeProvider: { (index: Int, data: Int, collectionSize: CGSize) -> CGSize in
-            return CGSize(width: 80.0, height: 30.0)
+            
+            return CGSize(width: (UIScreen.main.bounds.width - 50.0) / 4.0, height: 30.0)
         })
         
+        //justifyContent: 调整item在每行中的显示样式
+        //alignContent: 调整所有的item的显示位置
+        provider.layout = FlowLayout(lineSpacing: 5.0, interitemSpacing: 10.0, justifyContent: JustifyContent.end, alignItems: AlignItem.start, alignContent: AlignContent.start) //FlowLayout(spacing: 10.0)
+        /**
+         根据文档中的说明, 一共存在FlowLayout, WaterfallLayout, RowLayout, InsetLayout, TransposeLayout几种布局样式
+         
+         */
         collectionView.provider = provider
     }
     
